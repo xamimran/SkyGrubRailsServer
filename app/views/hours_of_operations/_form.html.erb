@@ -1,0 +1,47 @@
+<%= form_with(model: hours_of_operation) do |form| %>
+  <% if hours_of_operation.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(hours_of_operation.errors.count, "error") %> prohibited this hours_of_operation from being saved:</h2>
+
+      <ul>
+        <% hours_of_operation.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :restaurant_id, style: "display: block" %>
+    <%= form.text_field :restaurant_id %>
+  </div>
+
+  <div>
+    <%= form.label :day, style: "display: block" %>
+    <%= form.text_field :day %>
+  </div>
+
+  <div>
+    <%= form.label :openTime1, style: "display: block" %>
+    <%= form.text_field :openTime1 %>
+  </div>
+
+  <div>
+    <%= form.label :closeTime1, style: "display: block" %>
+    <%= form.text_field :closeTime1 %>
+  </div>
+
+  <div>
+    <%= form.label :openTime2, style: "display: block" %>
+    <%= form.text_field :openTime2 %>
+  </div>
+
+  <div>
+    <%= form.label :closeTime2, style: "display: block" %>
+    <%= form.text_field :closeTime2 %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

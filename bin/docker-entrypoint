@@ -1,0 +1,27 @@
+#!/bin/bash -e
+
+# If running the rails server then create or migrate existing database
+# Function to check and stop existing server
+check_and_stop_server() {
+  if [ -f /rails/tmp/pids/server.pid ]; then
+    pid=$(cat /rails/tmp/pids/server.pid)
+    if ps -p $pid > /dev/null; then
+      echo "Stopping the existing server with PID $pid"
+      kill $pid
+      sleep 5 # Give some time for the server to stop gracefully
+    fi
+    rm /rails/tmp/pids/server.pid
+  fi
+
+  if [ "${RAILS_ENV}" == "production" ]; then
+    ./bin/rails db:prepare
+  fi
+}
+
+# Check if running the rails server
+if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
+  check_and_stop_server
+  ./bin/rails db:prepare
+fi
+
+exec "${@}"

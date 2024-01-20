@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @item_price %>
+
+<div>
+  <%= link_to "Edit this item price", edit_item_price_path(@item_price) %> |
+  <%= link_to "Back to item prices", item_prices_path %>
+
+  <%= button_to "Destroy this item price", @item_price, method: :delete %>
+</div>

@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @modifier %>
+
+<div>
+  <%= link_to "Edit this modifier", edit_modifier_path(@modifier) %> |
+  <%= link_to "Back to modifiers", modifiers_path %>
+
+  <%= button_to "Destroy this modifier", @modifier, method: :delete %>
+</div>

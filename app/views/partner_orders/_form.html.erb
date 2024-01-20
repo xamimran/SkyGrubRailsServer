@@ -1,0 +1,67 @@
+<%= form_with(model: partner_order) do |form| %>
+  <% if partner_order.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(partner_order.errors.count, "error") %> prohibited this partner_order from being saved:</h2>
+
+      <ul>
+        <% partner_order.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :partner_id, style: "display: block" %>
+    <%= form.text_field :partner_id %>
+  </div>
+
+  <div>
+    <%= form.label :order_id, style: "display: block" %>
+    <%= form.text_field :order_id %>
+  </div>
+
+  <div>
+    <%= form.label :customer_review, style: "display: block" %>
+    <%= form.text_area :customer_review %>
+  </div>
+
+  <div>
+    <%= form.label :partner_status, style: "display: block" %>
+    <%= form.text_field :partner_status %>
+  </div>
+
+  <div>
+    <%= form.label :assigned_at, style: "display: block" %>
+    <%= form.datetime_field :assigned_at %>
+  </div>
+
+  <div>
+    <%= form.label :responded_at, style: "display: block" %>
+    <%= form.datetime_field :responded_at %>
+  </div>
+
+  <div>
+    <%= form.label :pickup_at, style: "display: block" %>
+    <%= form.datetime_field :pickup_at %>
+  </div>
+
+  <div>
+    <%= form.label :delivered_at, style: "display: block" %>
+    <%= form.datetime_field :delivered_at %>
+  </div>
+
+  <div>
+    <%= form.label :notification_sent_at, style: "display: block" %>
+    <%= form.datetime_field :notification_sent_at %>
+  </div>
+
+  <div>
+    <%= form.label :notification_response_due_by, style: "display: block" %>
+    <%= form.datetime_field :notification_response_due_by %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Modifiers</h1>
+
+<div id="modifiers">
+  <% @modifiers.each do |modifier| %>
+    <%= render modifier %>
+    <p>
+      <%= link_to "Show this modifier", modifier %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New modifier", new_modifier_path %>

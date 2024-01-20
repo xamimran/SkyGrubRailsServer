@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  modifier: one
+  name: MyString
+  additional_price: 9.99
+
+two:
+  modifier: two
+  name: MyString
+  additional_price: 9.99

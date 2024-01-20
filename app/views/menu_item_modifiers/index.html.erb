@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Menu item modifiers</h1>
+
+<div id="menu_item_modifiers">
+  <% @menu_item_modifiers.each do |menu_item_modifier| %>
+    <%= render menu_item_modifier %>
+    <p>
+      <%= link_to "Show this menu item modifier", menu_item_modifier %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New menu item modifier", new_menu_item_modifier_path %>

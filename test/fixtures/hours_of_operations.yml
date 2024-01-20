@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  restaurant: one
+  day: MyString
+  openTime1: MyString
+  closeTime1: MyString
+  openTime2: MyString
+  closeTime2: MyString
+
+two:
+  restaurant: two
+  day: MyString
+  openTime1: MyString
+  closeTime1: MyString
+  openTime2: MyString
+  closeTime2: MyString

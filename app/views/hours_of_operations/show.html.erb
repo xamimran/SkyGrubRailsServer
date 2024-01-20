@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @hours_of_operation %>
+
+<div>
+  <%= link_to "Edit this hours of operation", edit_hours_of_operation_path(@hours_of_operation) %> |
+  <%= link_to "Back to hours of operations", hours_of_operations_path %>
+
+  <%= button_to "Destroy this hours of operation", @hours_of_operation, method: :delete %>
+</div>

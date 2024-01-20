@@ -1,0 +1,25 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @partner_order %>
+
+<p>
+  <strong>Order:</strong>
+  <%= @partner_order.order.id %> 
+</p>
+
+<p>
+  <strong>Partner:</strong>
+  <%= @partner_order.partner.username %>
+</p>
+
+<p>
+  <strong>Customer:</strong>
+  <%= @partner_order.order.user.username %>
+</p>
+
+<div>
+  <%= link_to "Edit this partner order", edit_partner_order_path(@partner_order) %> |
+  <%= link_to "Back to partner orders", partner_orders_path %>
+
+  <%= button_to "Destroy this partner order", @partner_order, method: :delete %>
+</div>

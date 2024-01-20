@@ -1,0 +1,759 @@
+  [1m[35m (0.6ms)[0m  [1m[35mDROP TABLE IF EXISTS "active_admin_comments"[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE TABLE "active_admin_comments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "namespace" varchar, "body" text, "resource_type" varchar, "resource_id" integer, "author_type" varchar, "author_id" integer, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_active_admin_comments_on_author" ON "active_admin_comments" ("author_type", "author_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_active_admin_comments_on_namespace" ON "active_admin_comments" ("namespace")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_active_admin_comments_on_resource" ON "active_admin_comments" ("resource_type", "resource_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "admin_users"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "admin_users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "reset_password_token" varchar, "reset_password_sent_at" datetime(6), "remember_created_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_admin_users_on_email" ON "admin_users" ("email")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_admin_users_on_reset_password_token" ON "admin_users" ("reset_password_token")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "hours_of_operations"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "hours_of_operations" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "restaurant_id" integer NOT NULL, "day" varchar, "openTime1" varchar, "closeTime1" varchar, "openTime2" varchar, "closeTime2" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_hours_of_operations_on_restaurant_id" ON "hours_of_operations" ("restaurant_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "item_prices"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "item_prices" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "base_price" decimal, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_item_prices_on_menu_item_id" ON "item_prices" ("menu_item_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "menu_item_modifiers"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "menu_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "modifier_id" integer NOT NULL, "primary" boolean, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_menu_item_modifiers_on_menu_item_id" ON "menu_item_modifiers" ("menu_item_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_menu_item_modifiers_on_modifier_id" ON "menu_item_modifiers" ("modifier_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "menu_items"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "menu_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "restaurant_id" integer NOT NULL, "type" varchar, "types_of_food" varchar, "name" varchar, "description" text, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_menu_items_on_restaurant_id" ON "menu_items" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "modifier_options"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "modifier_options" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "modifier_id" integer NOT NULL, "name" varchar, "additional_price" decimal, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_modifier_options_on_modifier_id" ON "modifier_options" ("modifier_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "modifiers"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "order_item_modifiers"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "order_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_item_id" integer NOT NULL, "modifier_option_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_order_item_modifiers_on_modifier_option_id" ON "order_item_modifiers" ("modifier_option_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_order_item_modifiers_on_order_item_id" ON "order_item_modifiers" ("order_item_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "order_items"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "order_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_id" integer NOT NULL, "menu_item_id" integer NOT NULL, "quantity" integer, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_order_items_on_menu_item_id" ON "order_items" ("menu_item_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_order_items_on_order_id" ON "order_items" ("order_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "orders"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "restaurant_id" integer NOT NULL, "status" varchar, "total_price" decimal, "estimated_wait_time" integer, "delivery_address" varchar, "delivery_mileage" decimal, "cancelled" boolean, "cancellation_reason" varchar, "cancelled_at" datetime(6), "delivery_fee" decimal, "tip_amount" decimal, "partner_review" text, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_orders_on_restaurant_id" ON "orders" ("restaurant_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_orders_on_user_id" ON "orders" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "partner_orders"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "partner_orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "partner_id" integer NOT NULL, "order_id" integer NOT NULL, "customer_review" text, "partner_status" varchar, "assigned_at" datetime(6), "responded_at" datetime(6), "pickup_at" datetime(6), "delivered_at" datetime(6), "notification_sent_at" datetime(6), "notification_response_due_by" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_partner_orders_on_order_id" ON "partner_orders" ("order_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_partner_orders_on_partner_id" ON "partner_orders" ("partner_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "restaurants"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "restaurants" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "address" varchar, "phone" varchar, "cuisine_type" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "latitude" float, "longitude" float)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "users"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "first_name" varchar, "last_name" varchar, "role" varchar, "email" varchar, "password_hash" varchar, "status" varchar, "address" varchar, "phone" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "latitude" float, "longitude" float)[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "ahours_of_operations" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "restaurant_id" integer NOT NULL, "day" varchar DEFAULT NULL, "openTime1" varchar DEFAULT NULL, "closeTime1" varchar DEFAULT NULL, "openTime2" varchar DEFAULT NULL, "closeTime2" varchar DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_ahours_of_operations_on_restaurant_id" ON "ahours_of_operations" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "ahours_of_operations" ("id","restaurant_id","day","openTime1","closeTime1","openTime2","closeTime2","created_at","updated_at")
+                     SELECT "id","restaurant_id","day","openTime1","closeTime1","openTime2","closeTime2","created_at","updated_at" FROM "hours_of_operations"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "hours_of_operations"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "hours_of_operations" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "restaurant_id" integer NOT NULL, "day" varchar DEFAULT NULL, "openTime1" varchar DEFAULT NULL, "closeTime1" varchar DEFAULT NULL, "openTime2" varchar DEFAULT NULL, "closeTime2" varchar DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c84bf8003e"
+FOREIGN KEY ("restaurant_id")
+  REFERENCES "restaurants" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_hours_of_operations_on_restaurant_id" ON "hours_of_operations" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "hours_of_operations" ("id","restaurant_id","day","openTime1","closeTime1","openTime2","closeTime2","created_at","updated_at")
+                     SELECT "id","restaurant_id","day","openTime1","closeTime1","openTime2","closeTime2","created_at","updated_at" FROM "ahours_of_operations"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "ahours_of_operations"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aitem_prices" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "base_price" decimal DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aitem_prices_on_menu_item_id" ON "aitem_prices" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "aitem_prices" ("id","menu_item_id","base_price","created_at","updated_at")
+                     SELECT "id","menu_item_id","base_price","created_at","updated_at" FROM "item_prices"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "item_prices"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "item_prices" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "base_price" decimal DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_843ebab47b"
+FOREIGN KEY ("menu_item_id")
+  REFERENCES "menu_items" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_item_prices_on_menu_item_id" ON "item_prices" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "item_prices" ("id","menu_item_id","base_price","created_at","updated_at")
+                     SELECT "id","menu_item_id","base_price","created_at","updated_at" FROM "aitem_prices"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aitem_prices"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "amenu_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "modifier_id" integer NOT NULL, "primary" boolean DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_amenu_item_modifiers_on_modifier_id" ON "amenu_item_modifiers" ("modifier_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_amenu_item_modifiers_on_menu_item_id" ON "amenu_item_modifiers" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "amenu_item_modifiers" ("id","menu_item_id","modifier_id","primary","created_at","updated_at")
+                     SELECT "id","menu_item_id","modifier_id","primary","created_at","updated_at" FROM "menu_item_modifiers"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "menu_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "menu_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "modifier_id" integer NOT NULL, "primary" boolean DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c31fef2b2b"
+FOREIGN KEY ("menu_item_id")
+  REFERENCES "menu_items" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_menu_item_modifiers_on_menu_item_id" ON "menu_item_modifiers" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_menu_item_modifiers_on_modifier_id" ON "menu_item_modifiers" ("modifier_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "menu_item_modifiers" ("id","menu_item_id","modifier_id","primary","created_at","updated_at")
+                     SELECT "id","menu_item_id","modifier_id","primary","created_at","updated_at" FROM "amenu_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "amenu_item_modifiers"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "amenu_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "modifier_id" integer NOT NULL, "primary" boolean DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_amenu_item_modifiers_on_modifier_id" ON "amenu_item_modifiers" ("modifier_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_amenu_item_modifiers_on_menu_item_id" ON "amenu_item_modifiers" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "amenu_item_modifiers" ("id","menu_item_id","modifier_id","primary","created_at","updated_at")
+                     SELECT "id","menu_item_id","modifier_id","primary","created_at","updated_at" FROM "menu_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "menu_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "menu_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "modifier_id" integer NOT NULL, "primary" boolean DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c31fef2b2b"
+FOREIGN KEY ("menu_item_id")
+  REFERENCES "menu_items" ("id")
+, CONSTRAINT "fk_rails_3b58359ab0"
+FOREIGN KEY ("modifier_id")
+  REFERENCES "modifiers" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_menu_item_modifiers_on_menu_item_id" ON "menu_item_modifiers" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_menu_item_modifiers_on_modifier_id" ON "menu_item_modifiers" ("modifier_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "menu_item_modifiers" ("id","menu_item_id","modifier_id","primary","created_at","updated_at")
+                     SELECT "id","menu_item_id","modifier_id","primary","created_at","updated_at" FROM "amenu_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "amenu_item_modifiers"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "amenu_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "restaurant_id" integer NOT NULL, "type" varchar DEFAULT NULL, "types_of_food" varchar DEFAULT NULL, "name" varchar DEFAULT NULL, "description" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_amenu_items_on_restaurant_id" ON "amenu_items" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "amenu_items" ("id","restaurant_id","type","types_of_food","name","description","created_at","updated_at")
+                     SELECT "id","restaurant_id","type","types_of_food","name","description","created_at","updated_at" FROM "menu_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "menu_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "menu_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "restaurant_id" integer NOT NULL, "type" varchar DEFAULT NULL, "types_of_food" varchar DEFAULT NULL, "name" varchar DEFAULT NULL, "description" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_56e3e3a67b"
+FOREIGN KEY ("restaurant_id")
+  REFERENCES "restaurants" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_menu_items_on_restaurant_id" ON "menu_items" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "menu_items" ("id","restaurant_id","type","types_of_food","name","description","created_at","updated_at")
+                     SELECT "id","restaurant_id","type","types_of_food","name","description","created_at","updated_at" FROM "amenu_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "amenu_items"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "amodifier_options" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "modifier_id" integer NOT NULL, "name" varchar DEFAULT NULL, "additional_price" decimal DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_amodifier_options_on_modifier_id" ON "amodifier_options" ("modifier_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "amodifier_options" ("id","modifier_id","name","additional_price","created_at","updated_at")
+                     SELECT "id","modifier_id","name","additional_price","created_at","updated_at" FROM "modifier_options"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "modifier_options"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "modifier_options" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "modifier_id" integer NOT NULL, "name" varchar DEFAULT NULL, "additional_price" decimal DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_8247c40d89"
+FOREIGN KEY ("modifier_id")
+  REFERENCES "modifiers" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_modifier_options_on_modifier_id" ON "modifier_options" ("modifier_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "modifier_options" ("id","modifier_id","name","additional_price","created_at","updated_at")
+                     SELECT "id","modifier_id","name","additional_price","created_at","updated_at" FROM "amodifier_options"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "amodifier_options"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aorder_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_item_id" integer NOT NULL, "modifier_option_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_item_modifiers_on_order_item_id" ON "aorder_item_modifiers" ("order_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_item_modifiers_on_modifier_option_id" ON "aorder_item_modifiers" ("modifier_option_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "aorder_item_modifiers" ("id","order_item_id","modifier_option_id","created_at","updated_at")
+                     SELECT "id","order_item_id","modifier_option_id","created_at","updated_at" FROM "order_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "order_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "order_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_item_id" integer NOT NULL, "modifier_option_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_5622dd53e2"
+FOREIGN KEY ("modifier_option_id")
+  REFERENCES "modifier_options" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_order_item_modifiers_on_modifier_option_id" ON "order_item_modifiers" ("modifier_option_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_order_item_modifiers_on_order_item_id" ON "order_item_modifiers" ("order_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "order_item_modifiers" ("id","order_item_id","modifier_option_id","created_at","updated_at")
+                     SELECT "id","order_item_id","modifier_option_id","created_at","updated_at" FROM "aorder_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aorder_item_modifiers"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aorder_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_item_id" integer NOT NULL, "modifier_option_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_item_modifiers_on_order_item_id" ON "aorder_item_modifiers" ("order_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_item_modifiers_on_modifier_option_id" ON "aorder_item_modifiers" ("modifier_option_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "aorder_item_modifiers" ("id","order_item_id","modifier_option_id","created_at","updated_at")
+                     SELECT "id","order_item_id","modifier_option_id","created_at","updated_at" FROM "order_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "order_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "order_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_item_id" integer NOT NULL, "modifier_option_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_5622dd53e2"
+FOREIGN KEY ("modifier_option_id")
+  REFERENCES "modifier_options" ("id")
+, CONSTRAINT "fk_rails_c123920f0e"
+FOREIGN KEY ("order_item_id")
+  REFERENCES "order_items" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_order_item_modifiers_on_modifier_option_id" ON "order_item_modifiers" ("modifier_option_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_order_item_modifiers_on_order_item_id" ON "order_item_modifiers" ("order_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "order_item_modifiers" ("id","order_item_id","modifier_option_id","created_at","updated_at")
+                     SELECT "id","order_item_id","modifier_option_id","created_at","updated_at" FROM "aorder_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aorder_item_modifiers"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aorder_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_id" integer NOT NULL, "menu_item_id" integer NOT NULL, "quantity" integer DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_items_on_order_id" ON "aorder_items" ("order_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_items_on_menu_item_id" ON "aorder_items" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "aorder_items" ("id","order_id","menu_item_id","quantity","created_at","updated_at")
+                     SELECT "id","order_id","menu_item_id","quantity","created_at","updated_at" FROM "order_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "order_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "order_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_id" integer NOT NULL, "menu_item_id" integer NOT NULL, "quantity" integer DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_5ab12df479"
+FOREIGN KEY ("menu_item_id")
+  REFERENCES "menu_items" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_order_items_on_menu_item_id" ON "order_items" ("menu_item_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_order_items_on_order_id" ON "order_items" ("order_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "order_items" ("id","order_id","menu_item_id","quantity","created_at","updated_at")
+                     SELECT "id","order_id","menu_item_id","quantity","created_at","updated_at" FROM "aorder_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aorder_items"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aorder_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_id" integer NOT NULL, "menu_item_id" integer NOT NULL, "quantity" integer DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_items_on_order_id" ON "aorder_items" ("order_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_items_on_menu_item_id" ON "aorder_items" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "aorder_items" ("id","order_id","menu_item_id","quantity","created_at","updated_at")
+                     SELECT "id","order_id","menu_item_id","quantity","created_at","updated_at" FROM "order_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "order_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "order_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_id" integer NOT NULL, "menu_item_id" integer NOT NULL, "quantity" integer DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_5ab12df479"
+FOREIGN KEY ("menu_item_id")
+  REFERENCES "menu_items" ("id")
+, CONSTRAINT "fk_rails_e3cb28f071"
+FOREIGN KEY ("order_id")
+  REFERENCES "orders" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_order_items_on_menu_item_id" ON "order_items" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_order_items_on_order_id" ON "order_items" ("order_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "order_items" ("id","order_id","menu_item_id","quantity","created_at","updated_at")
+                     SELECT "id","order_id","menu_item_id","quantity","created_at","updated_at" FROM "aorder_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aorder_items"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aorders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "restaurant_id" integer NOT NULL, "status" varchar DEFAULT NULL, "total_price" decimal DEFAULT NULL, "estimated_wait_time" integer DEFAULT NULL, "delivery_address" varchar DEFAULT NULL, "delivery_mileage" decimal DEFAULT NULL, "cancelled" boolean DEFAULT NULL, "cancellation_reason" varchar DEFAULT NULL, "cancelled_at" datetime(6) DEFAULT NULL, "delivery_fee" decimal DEFAULT NULL, "tip_amount" decimal DEFAULT NULL, "partner_review" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorders_on_user_id" ON "aorders" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorders_on_restaurant_id" ON "aorders" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "aorders" ("id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at")
+                     SELECT "id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at" FROM "orders"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "orders"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "restaurant_id" integer NOT NULL, "status" varchar DEFAULT NULL, "total_price" decimal DEFAULT NULL, "estimated_wait_time" integer DEFAULT NULL, "delivery_address" varchar DEFAULT NULL, "delivery_mileage" decimal DEFAULT NULL, "cancelled" boolean DEFAULT NULL, "cancellation_reason" varchar DEFAULT NULL, "cancelled_at" datetime(6) DEFAULT NULL, "delivery_fee" decimal DEFAULT NULL, "tip_amount" decimal DEFAULT NULL, "partner_review" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_9af093cac8"
+FOREIGN KEY ("restaurant_id")
+  REFERENCES "restaurants" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_orders_on_restaurant_id" ON "orders" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_orders_on_user_id" ON "orders" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "orders" ("id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at")
+                     SELECT "id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at" FROM "aorders"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aorders"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aorders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "restaurant_id" integer NOT NULL, "status" varchar DEFAULT NULL, "total_price" decimal DEFAULT NULL, "estimated_wait_time" integer DEFAULT NULL, "delivery_address" varchar DEFAULT NULL, "delivery_mileage" decimal DEFAULT NULL, "cancelled" boolean DEFAULT NULL, "cancellation_reason" varchar DEFAULT NULL, "cancelled_at" datetime(6) DEFAULT NULL, "delivery_fee" decimal DEFAULT NULL, "tip_amount" decimal DEFAULT NULL, "partner_review" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorders_on_user_id" ON "aorders" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorders_on_restaurant_id" ON "aorders" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "aorders" ("id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at")
+                     SELECT "id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at" FROM "orders"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "orders"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "restaurant_id" integer NOT NULL, "status" varchar DEFAULT NULL, "total_price" decimal DEFAULT NULL, "estimated_wait_time" integer DEFAULT NULL, "delivery_address" varchar DEFAULT NULL, "delivery_mileage" decimal DEFAULT NULL, "cancelled" boolean DEFAULT NULL, "cancellation_reason" varchar DEFAULT NULL, "cancelled_at" datetime(6) DEFAULT NULL, "delivery_fee" decimal DEFAULT NULL, "tip_amount" decimal DEFAULT NULL, "partner_review" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_9af093cac8"
+FOREIGN KEY ("restaurant_id")
+  REFERENCES "restaurants" ("id")
+, CONSTRAINT "fk_rails_f868b47f6a"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_orders_on_restaurant_id" ON "orders" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_orders_on_user_id" ON "orders" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "orders" ("id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at")
+                     SELECT "id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at" FROM "aorders"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aorders"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.3ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "apartner_orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "partner_id" integer NOT NULL, "order_id" integer NOT NULL, "customer_review" text DEFAULT NULL, "partner_status" varchar DEFAULT NULL, "assigned_at" datetime(6) DEFAULT NULL, "responded_at" datetime(6) DEFAULT NULL, "pickup_at" datetime(6) DEFAULT NULL, "delivered_at" datetime(6) DEFAULT NULL, "notification_sent_at" datetime(6) DEFAULT NULL, "notification_response_due_by" datetime(6) DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer DEFAULT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_apartner_orders_on_partner_id" ON "apartner_orders" ("partner_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_apartner_orders_on_order_id" ON "apartner_orders" ("order_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "apartner_orders" ("id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id")
+                     SELECT "id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id" FROM "partner_orders"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "partner_orders"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "partner_orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "partner_id" integer NOT NULL, "order_id" integer NOT NULL, "customer_review" text DEFAULT NULL, "partner_status" varchar DEFAULT NULL, "assigned_at" datetime(6) DEFAULT NULL, "responded_at" datetime(6) DEFAULT NULL, "pickup_at" datetime(6) DEFAULT NULL, "delivered_at" datetime(6) DEFAULT NULL, "notification_sent_at" datetime(6) DEFAULT NULL, "notification_response_due_by" datetime(6) DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer DEFAULT NULL, CONSTRAINT "fk_rails_f28a0ffb10"
+FOREIGN KEY ("order_id")
+  REFERENCES "orders" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_partner_orders_on_order_id" ON "partner_orders" ("order_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_partner_orders_on_partner_id" ON "partner_orders" ("partner_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "partner_orders" ("id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id")
+                     SELECT "id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id" FROM "apartner_orders"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "apartner_orders"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "apartner_orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "partner_id" integer NOT NULL, "order_id" integer NOT NULL, "customer_review" text DEFAULT NULL, "partner_status" varchar DEFAULT NULL, "assigned_at" datetime(6) DEFAULT NULL, "responded_at" datetime(6) DEFAULT NULL, "pickup_at" datetime(6) DEFAULT NULL, "delivered_at" datetime(6) DEFAULT NULL, "notification_sent_at" datetime(6) DEFAULT NULL, "notification_response_due_by" datetime(6) DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer DEFAULT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_apartner_orders_on_partner_id" ON "apartner_orders" ("partner_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_apartner_orders_on_order_id" ON "apartner_orders" ("order_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "apartner_orders" ("id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id")
+                     SELECT "id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id" FROM "partner_orders"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "partner_orders"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "partner_orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "partner_id" integer NOT NULL, "order_id" integer NOT NULL, "customer_review" text DEFAULT NULL, "partner_status" varchar DEFAULT NULL, "assigned_at" datetime(6) DEFAULT NULL, "responded_at" datetime(6) DEFAULT NULL, "pickup_at" datetime(6) DEFAULT NULL, "delivered_at" datetime(6) DEFAULT NULL, "notification_sent_at" datetime(6) DEFAULT NULL, "notification_response_due_by" datetime(6) DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer DEFAULT NULL, CONSTRAINT "fk_rails_f28a0ffb10"
+FOREIGN KEY ("order_id")
+  REFERENCES "orders" ("id")
+, CONSTRAINT "fk_rails_ce6d5d1561"
+FOREIGN KEY ("partner_id")
+  REFERENCES "partners" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_partner_orders_on_order_id" ON "partner_orders" ("order_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_partner_orders_on_partner_id" ON "partner_orders" ("partner_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[32mINSERT INTO "partner_orders" ("id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id")
+                     SELECT "id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id" FROM "apartner_orders"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "schema_sha1"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE IF EXISTS "active_admin_comments"[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "active_admin_comments" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "namespace" varchar, "body" text, "resource_type" varchar, "resource_id" integer, "author_type" varchar, "author_id" integer, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "index_active_admin_comments_on_author" ON "active_admin_comments" ("author_type", "author_id")[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "index_active_admin_comments_on_namespace" ON "active_admin_comments" ("namespace")[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "index_active_admin_comments_on_resource" ON "active_admin_comments" ("resource_type", "resource_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "admin_users"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "admin_users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar DEFAULT '' NOT NULL, "encrypted_password" varchar DEFAULT '' NOT NULL, "reset_password_token" varchar, "reset_password_sent_at" datetime(6), "remember_created_at" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_admin_users_on_email" ON "admin_users" ("email")[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_admin_users_on_reset_password_token" ON "admin_users" ("reset_password_token")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "hours_of_operations"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "hours_of_operations" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "restaurant_id" integer NOT NULL, "day" varchar, "openTime1" varchar, "closeTime1" varchar, "openTime2" varchar, "closeTime2" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_hours_of_operations_on_restaurant_id" ON "hours_of_operations" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "item_prices"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "item_prices" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "base_price" decimal, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_item_prices_on_menu_item_id" ON "item_prices" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "menu_item_modifiers"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "menu_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "modifier_id" integer NOT NULL, "primary" boolean, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_menu_item_modifiers_on_menu_item_id" ON "menu_item_modifiers" ("menu_item_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_menu_item_modifiers_on_modifier_id" ON "menu_item_modifiers" ("modifier_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "menu_items"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "menu_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "restaurant_id" integer NOT NULL, "type" varchar, "types_of_food" varchar, "name" varchar, "description" text, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_menu_items_on_restaurant_id" ON "menu_items" ("restaurant_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "modifier_options"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "modifier_options" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "modifier_id" integer NOT NULL, "name" varchar, "additional_price" decimal, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_modifier_options_on_modifier_id" ON "modifier_options" ("modifier_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "modifiers"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "order_item_modifiers"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "order_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_item_id" integer NOT NULL, "modifier_option_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_order_item_modifiers_on_modifier_option_id" ON "order_item_modifiers" ("modifier_option_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_order_item_modifiers_on_order_item_id" ON "order_item_modifiers" ("order_item_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "order_items"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "order_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_id" integer NOT NULL, "menu_item_id" integer NOT NULL, "quantity" integer, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_order_items_on_menu_item_id" ON "order_items" ("menu_item_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_order_items_on_order_id" ON "order_items" ("order_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "orders"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "restaurant_id" integer NOT NULL, "status" varchar, "total_price" decimal, "estimated_wait_time" integer, "delivery_address" varchar, "delivery_mileage" decimal, "cancelled" boolean, "cancellation_reason" varchar, "cancelled_at" datetime(6), "delivery_fee" decimal, "tip_amount" decimal, "partner_review" text, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_orders_on_restaurant_id" ON "orders" ("restaurant_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_orders_on_user_id" ON "orders" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "partner_orders"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "partner_orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "partner_id" integer NOT NULL, "order_id" integer NOT NULL, "customer_review" text, "partner_status" varchar, "assigned_at" datetime(6), "responded_at" datetime(6), "pickup_at" datetime(6), "delivered_at" datetime(6), "notification_sent_at" datetime(6), "notification_response_due_by" datetime(6), "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer)[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_partner_orders_on_order_id" ON "partner_orders" ("order_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_partner_orders_on_partner_id" ON "partner_orders" ("partner_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "restaurants"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "restaurants" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "address" varchar, "phone" varchar, "cuisine_type" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "latitude" float, "longitude" float)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "users"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "first_name" varchar, "last_name" varchar, "role" varchar, "email" varchar, "password_hash" varchar, "status" varchar, "address" varchar, "phone" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "latitude" float, "longitude" float)[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "ahours_of_operations" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "restaurant_id" integer NOT NULL, "day" varchar DEFAULT NULL, "openTime1" varchar DEFAULT NULL, "closeTime1" varchar DEFAULT NULL, "openTime2" varchar DEFAULT NULL, "closeTime2" varchar DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_ahours_of_operations_on_restaurant_id" ON "ahours_of_operations" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "ahours_of_operations" ("id","restaurant_id","day","openTime1","closeTime1","openTime2","closeTime2","created_at","updated_at")
+                     SELECT "id","restaurant_id","day","openTime1","closeTime1","openTime2","closeTime2","created_at","updated_at" FROM "hours_of_operations"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "hours_of_operations"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "hours_of_operations" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "restaurant_id" integer NOT NULL, "day" varchar DEFAULT NULL, "openTime1" varchar DEFAULT NULL, "closeTime1" varchar DEFAULT NULL, "openTime2" varchar DEFAULT NULL, "closeTime2" varchar DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c84bf8003e"
+FOREIGN KEY ("restaurant_id")
+  REFERENCES "restaurants" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_hours_of_operations_on_restaurant_id" ON "hours_of_operations" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "hours_of_operations" ("id","restaurant_id","day","openTime1","closeTime1","openTime2","closeTime2","created_at","updated_at")
+                     SELECT "id","restaurant_id","day","openTime1","closeTime1","openTime2","closeTime2","created_at","updated_at" FROM "ahours_of_operations"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "ahours_of_operations"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aitem_prices" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "base_price" decimal DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aitem_prices_on_menu_item_id" ON "aitem_prices" ("menu_item_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "aitem_prices" ("id","menu_item_id","base_price","created_at","updated_at")
+                     SELECT "id","menu_item_id","base_price","created_at","updated_at" FROM "item_prices"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "item_prices"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "item_prices" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "base_price" decimal DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_843ebab47b"
+FOREIGN KEY ("menu_item_id")
+  REFERENCES "menu_items" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_item_prices_on_menu_item_id" ON "item_prices" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "item_prices" ("id","menu_item_id","base_price","created_at","updated_at")
+                     SELECT "id","menu_item_id","base_price","created_at","updated_at" FROM "aitem_prices"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aitem_prices"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "amenu_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "modifier_id" integer NOT NULL, "primary" boolean DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_amenu_item_modifiers_on_modifier_id" ON "amenu_item_modifiers" ("modifier_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_amenu_item_modifiers_on_menu_item_id" ON "amenu_item_modifiers" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "amenu_item_modifiers" ("id","menu_item_id","modifier_id","primary","created_at","updated_at")
+                     SELECT "id","menu_item_id","modifier_id","primary","created_at","updated_at" FROM "menu_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "menu_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "menu_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "modifier_id" integer NOT NULL, "primary" boolean DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c31fef2b2b"
+FOREIGN KEY ("menu_item_id")
+  REFERENCES "menu_items" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_menu_item_modifiers_on_menu_item_id" ON "menu_item_modifiers" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_menu_item_modifiers_on_modifier_id" ON "menu_item_modifiers" ("modifier_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "menu_item_modifiers" ("id","menu_item_id","modifier_id","primary","created_at","updated_at")
+                     SELECT "id","menu_item_id","modifier_id","primary","created_at","updated_at" FROM "amenu_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "amenu_item_modifiers"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "amenu_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "modifier_id" integer NOT NULL, "primary" boolean DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_amenu_item_modifiers_on_modifier_id" ON "amenu_item_modifiers" ("modifier_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_amenu_item_modifiers_on_menu_item_id" ON "amenu_item_modifiers" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "amenu_item_modifiers" ("id","menu_item_id","modifier_id","primary","created_at","updated_at")
+                     SELECT "id","menu_item_id","modifier_id","primary","created_at","updated_at" FROM "menu_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "menu_item_modifiers"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "menu_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "menu_item_id" integer NOT NULL, "modifier_id" integer NOT NULL, "primary" boolean DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_c31fef2b2b"
+FOREIGN KEY ("menu_item_id")
+  REFERENCES "menu_items" ("id")
+, CONSTRAINT "fk_rails_3b58359ab0"
+FOREIGN KEY ("modifier_id")
+  REFERENCES "modifiers" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_menu_item_modifiers_on_menu_item_id" ON "menu_item_modifiers" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_menu_item_modifiers_on_modifier_id" ON "menu_item_modifiers" ("modifier_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "menu_item_modifiers" ("id","menu_item_id","modifier_id","primary","created_at","updated_at")
+                     SELECT "id","menu_item_id","modifier_id","primary","created_at","updated_at" FROM "amenu_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "amenu_item_modifiers"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "amenu_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "restaurant_id" integer NOT NULL, "type" varchar DEFAULT NULL, "types_of_food" varchar DEFAULT NULL, "name" varchar DEFAULT NULL, "description" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_amenu_items_on_restaurant_id" ON "amenu_items" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "amenu_items" ("id","restaurant_id","type","types_of_food","name","description","created_at","updated_at")
+                     SELECT "id","restaurant_id","type","types_of_food","name","description","created_at","updated_at" FROM "menu_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "menu_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "menu_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "restaurant_id" integer NOT NULL, "type" varchar DEFAULT NULL, "types_of_food" varchar DEFAULT NULL, "name" varchar DEFAULT NULL, "description" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_56e3e3a67b"
+FOREIGN KEY ("restaurant_id")
+  REFERENCES "restaurants" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_menu_items_on_restaurant_id" ON "menu_items" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "menu_items" ("id","restaurant_id","type","types_of_food","name","description","created_at","updated_at")
+                     SELECT "id","restaurant_id","type","types_of_food","name","description","created_at","updated_at" FROM "amenu_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "amenu_items"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "amodifier_options" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "modifier_id" integer NOT NULL, "name" varchar DEFAULT NULL, "additional_price" decimal DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_amodifier_options_on_modifier_id" ON "amodifier_options" ("modifier_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "amodifier_options" ("id","modifier_id","name","additional_price","created_at","updated_at")
+                     SELECT "id","modifier_id","name","additional_price","created_at","updated_at" FROM "modifier_options"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "modifier_options"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "modifier_options" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "modifier_id" integer NOT NULL, "name" varchar DEFAULT NULL, "additional_price" decimal DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_8247c40d89"
+FOREIGN KEY ("modifier_id")
+  REFERENCES "modifiers" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_modifier_options_on_modifier_id" ON "modifier_options" ("modifier_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "modifier_options" ("id","modifier_id","name","additional_price","created_at","updated_at")
+                     SELECT "id","modifier_id","name","additional_price","created_at","updated_at" FROM "amodifier_options"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "amodifier_options"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aorder_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_item_id" integer NOT NULL, "modifier_option_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_item_modifiers_on_order_item_id" ON "aorder_item_modifiers" ("order_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_item_modifiers_on_modifier_option_id" ON "aorder_item_modifiers" ("modifier_option_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "aorder_item_modifiers" ("id","order_item_id","modifier_option_id","created_at","updated_at")
+                     SELECT "id","order_item_id","modifier_option_id","created_at","updated_at" FROM "order_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "order_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "order_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_item_id" integer NOT NULL, "modifier_option_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_5622dd53e2"
+FOREIGN KEY ("modifier_option_id")
+  REFERENCES "modifier_options" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_order_item_modifiers_on_modifier_option_id" ON "order_item_modifiers" ("modifier_option_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_order_item_modifiers_on_order_item_id" ON "order_item_modifiers" ("order_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "order_item_modifiers" ("id","order_item_id","modifier_option_id","created_at","updated_at")
+                     SELECT "id","order_item_id","modifier_option_id","created_at","updated_at" FROM "aorder_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aorder_item_modifiers"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aorder_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_item_id" integer NOT NULL, "modifier_option_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_item_modifiers_on_order_item_id" ON "aorder_item_modifiers" ("order_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_item_modifiers_on_modifier_option_id" ON "aorder_item_modifiers" ("modifier_option_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "aorder_item_modifiers" ("id","order_item_id","modifier_option_id","created_at","updated_at")
+                     SELECT "id","order_item_id","modifier_option_id","created_at","updated_at" FROM "order_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "order_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "order_item_modifiers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_item_id" integer NOT NULL, "modifier_option_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_5622dd53e2"
+FOREIGN KEY ("modifier_option_id")
+  REFERENCES "modifier_options" ("id")
+, CONSTRAINT "fk_rails_c123920f0e"
+FOREIGN KEY ("order_item_id")
+  REFERENCES "order_items" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_order_item_modifiers_on_modifier_option_id" ON "order_item_modifiers" ("modifier_option_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_order_item_modifiers_on_order_item_id" ON "order_item_modifiers" ("order_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "order_item_modifiers" ("id","order_item_id","modifier_option_id","created_at","updated_at")
+                     SELECT "id","order_item_id","modifier_option_id","created_at","updated_at" FROM "aorder_item_modifiers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aorder_item_modifiers"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aorder_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_id" integer NOT NULL, "menu_item_id" integer NOT NULL, "quantity" integer DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_items_on_order_id" ON "aorder_items" ("order_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_items_on_menu_item_id" ON "aorder_items" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "aorder_items" ("id","order_id","menu_item_id","quantity","created_at","updated_at")
+                     SELECT "id","order_id","menu_item_id","quantity","created_at","updated_at" FROM "order_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "order_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "order_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_id" integer NOT NULL, "menu_item_id" integer NOT NULL, "quantity" integer DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_5ab12df479"
+FOREIGN KEY ("menu_item_id")
+  REFERENCES "menu_items" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_order_items_on_menu_item_id" ON "order_items" ("menu_item_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_order_items_on_order_id" ON "order_items" ("order_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "order_items" ("id","order_id","menu_item_id","quantity","created_at","updated_at")
+                     SELECT "id","order_id","menu_item_id","quantity","created_at","updated_at" FROM "aorder_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aorder_items"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aorder_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_id" integer NOT NULL, "menu_item_id" integer NOT NULL, "quantity" integer DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_items_on_order_id" ON "aorder_items" ("order_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorder_items_on_menu_item_id" ON "aorder_items" ("menu_item_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "aorder_items" ("id","order_id","menu_item_id","quantity","created_at","updated_at")
+                     SELECT "id","order_id","menu_item_id","quantity","created_at","updated_at" FROM "order_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "order_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "order_items" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "order_id" integer NOT NULL, "menu_item_id" integer NOT NULL, "quantity" integer DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_5ab12df479"
+FOREIGN KEY ("menu_item_id")
+  REFERENCES "menu_items" ("id")
+, CONSTRAINT "fk_rails_e3cb28f071"
+FOREIGN KEY ("order_id")
+  REFERENCES "orders" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_order_items_on_menu_item_id" ON "order_items" ("menu_item_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_order_items_on_order_id" ON "order_items" ("order_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "order_items" ("id","order_id","menu_item_id","quantity","created_at","updated_at")
+                     SELECT "id","order_id","menu_item_id","quantity","created_at","updated_at" FROM "aorder_items"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aorder_items"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aorders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "restaurant_id" integer NOT NULL, "status" varchar DEFAULT NULL, "total_price" decimal DEFAULT NULL, "estimated_wait_time" integer DEFAULT NULL, "delivery_address" varchar DEFAULT NULL, "delivery_mileage" decimal DEFAULT NULL, "cancelled" boolean DEFAULT NULL, "cancellation_reason" varchar DEFAULT NULL, "cancelled_at" datetime(6) DEFAULT NULL, "delivery_fee" decimal DEFAULT NULL, "tip_amount" decimal DEFAULT NULL, "partner_review" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorders_on_user_id" ON "aorders" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorders_on_restaurant_id" ON "aorders" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "aorders" ("id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at")
+                     SELECT "id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at" FROM "orders"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "orders"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "restaurant_id" integer NOT NULL, "status" varchar DEFAULT NULL, "total_price" decimal DEFAULT NULL, "estimated_wait_time" integer DEFAULT NULL, "delivery_address" varchar DEFAULT NULL, "delivery_mileage" decimal DEFAULT NULL, "cancelled" boolean DEFAULT NULL, "cancellation_reason" varchar DEFAULT NULL, "cancelled_at" datetime(6) DEFAULT NULL, "delivery_fee" decimal DEFAULT NULL, "tip_amount" decimal DEFAULT NULL, "partner_review" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_9af093cac8"
+FOREIGN KEY ("restaurant_id")
+  REFERENCES "restaurants" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_orders_on_restaurant_id" ON "orders" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_orders_on_user_id" ON "orders" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "orders" ("id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at")
+                     SELECT "id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at" FROM "aorders"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aorders"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aorders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "restaurant_id" integer NOT NULL, "status" varchar DEFAULT NULL, "total_price" decimal DEFAULT NULL, "estimated_wait_time" integer DEFAULT NULL, "delivery_address" varchar DEFAULT NULL, "delivery_mileage" decimal DEFAULT NULL, "cancelled" boolean DEFAULT NULL, "cancellation_reason" varchar DEFAULT NULL, "cancelled_at" datetime(6) DEFAULT NULL, "delivery_fee" decimal DEFAULT NULL, "tip_amount" decimal DEFAULT NULL, "partner_review" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorders_on_user_id" ON "aorders" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aorders_on_restaurant_id" ON "aorders" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "aorders" ("id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at")
+                     SELECT "id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at" FROM "orders"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "orders"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "restaurant_id" integer NOT NULL, "status" varchar DEFAULT NULL, "total_price" decimal DEFAULT NULL, "estimated_wait_time" integer DEFAULT NULL, "delivery_address" varchar DEFAULT NULL, "delivery_mileage" decimal DEFAULT NULL, "cancelled" boolean DEFAULT NULL, "cancellation_reason" varchar DEFAULT NULL, "cancelled_at" datetime(6) DEFAULT NULL, "delivery_fee" decimal DEFAULT NULL, "tip_amount" decimal DEFAULT NULL, "partner_review" text DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_9af093cac8"
+FOREIGN KEY ("restaurant_id")
+  REFERENCES "restaurants" ("id")
+, CONSTRAINT "fk_rails_f868b47f6a"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_orders_on_restaurant_id" ON "orders" ("restaurant_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_orders_on_user_id" ON "orders" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "orders" ("id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at")
+                     SELECT "id","user_id","restaurant_id","status","total_price","estimated_wait_time","delivery_address","delivery_mileage","cancelled","cancellation_reason","cancelled_at","delivery_fee","tip_amount","partner_review","created_at","updated_at" FROM "aorders"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aorders"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "apartner_orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "partner_id" integer NOT NULL, "order_id" integer NOT NULL, "customer_review" text DEFAULT NULL, "partner_status" varchar DEFAULT NULL, "assigned_at" datetime(6) DEFAULT NULL, "responded_at" datetime(6) DEFAULT NULL, "pickup_at" datetime(6) DEFAULT NULL, "delivered_at" datetime(6) DEFAULT NULL, "notification_sent_at" datetime(6) DEFAULT NULL, "notification_response_due_by" datetime(6) DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer DEFAULT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_apartner_orders_on_partner_id" ON "apartner_orders" ("partner_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_apartner_orders_on_order_id" ON "apartner_orders" ("order_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "apartner_orders" ("id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id")
+                     SELECT "id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id" FROM "partner_orders"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "partner_orders"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "partner_orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "partner_id" integer NOT NULL, "order_id" integer NOT NULL, "customer_review" text DEFAULT NULL, "partner_status" varchar DEFAULT NULL, "assigned_at" datetime(6) DEFAULT NULL, "responded_at" datetime(6) DEFAULT NULL, "pickup_at" datetime(6) DEFAULT NULL, "delivered_at" datetime(6) DEFAULT NULL, "notification_sent_at" datetime(6) DEFAULT NULL, "notification_response_due_by" datetime(6) DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer DEFAULT NULL, CONSTRAINT "fk_rails_f28a0ffb10"
+FOREIGN KEY ("order_id")
+  REFERENCES "orders" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_partner_orders_on_order_id" ON "partner_orders" ("order_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_partner_orders_on_partner_id" ON "partner_orders" ("partner_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "partner_orders" ("id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id")
+                     SELECT "id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id" FROM "apartner_orders"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "apartner_orders"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "apartner_orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "partner_id" integer NOT NULL, "order_id" integer NOT NULL, "customer_review" text DEFAULT NULL, "partner_status" varchar DEFAULT NULL, "assigned_at" datetime(6) DEFAULT NULL, "responded_at" datetime(6) DEFAULT NULL, "pickup_at" datetime(6) DEFAULT NULL, "delivered_at" datetime(6) DEFAULT NULL, "notification_sent_at" datetime(6) DEFAULT NULL, "notification_response_due_by" datetime(6) DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer DEFAULT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_apartner_orders_on_partner_id" ON "apartner_orders" ("partner_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_apartner_orders_on_order_id" ON "apartner_orders" ("order_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "apartner_orders" ("id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id")
+                     SELECT "id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id" FROM "partner_orders"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "partner_orders"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "partner_orders" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "partner_id" integer NOT NULL, "order_id" integer NOT NULL, "customer_review" text DEFAULT NULL, "partner_status" varchar DEFAULT NULL, "assigned_at" datetime(6) DEFAULT NULL, "responded_at" datetime(6) DEFAULT NULL, "pickup_at" datetime(6) DEFAULT NULL, "delivered_at" datetime(6) DEFAULT NULL, "notification_sent_at" datetime(6) DEFAULT NULL, "notification_response_due_by" datetime(6) DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "user_id" integer DEFAULT NULL, CONSTRAINT "fk_rails_f28a0ffb10"
+FOREIGN KEY ("order_id")
+  REFERENCES "orders" ("id")
+, CONSTRAINT "fk_rails_ce6d5d1561"
+FOREIGN KEY ("partner_id")
+  REFERENCES "partners" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_partner_orders_on_order_id" ON "partner_orders" ("order_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_partner_orders_on_partner_id" ON "partner_orders" ("partner_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[32mINSERT INTO "partner_orders" ("id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id")
+                     SELECT "id","partner_id","order_id","customer_review","partner_status","assigned_at","responded_at","pickup_at","delivered_at","notification_sent_at","notification_response_due_by","created_at","updated_at","user_id" FROM "apartner_orders"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m

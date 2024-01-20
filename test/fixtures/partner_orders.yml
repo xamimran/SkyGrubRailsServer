@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  partner: one
+  order: one
+  customer_review: MyText
+  partner_status: MyString
+  assigned_at: 2024-01-14 17:03:54
+  responded_at: 2024-01-14 17:03:54
+  pickup_at: 2024-01-14 17:03:54
+  delivered_at: 2024-01-14 17:03:54
+  notification_sent_at: 2024-01-14 17:03:54
+  notification_response_due_by: 2024-01-14 17:03:54
+
+two:
+  partner: two
+  order: two
+  customer_review: MyText
+  partner_status: MyString
+  assigned_at: 2024-01-14 17:03:54
+  responded_at: 2024-01-14 17:03:54
+  pickup_at: 2024-01-14 17:03:54
+  delivered_at: 2024-01-14 17:03:54
+  notification_sent_at: 2024-01-14 17:03:54
+  notification_response_due_by: 2024-01-14 17:03:54

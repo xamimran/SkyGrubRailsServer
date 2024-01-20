@@ -1,0 +1,49 @@
+// Sass variable overrides must be declared before loading up Active Admin's styles.
+//
+// To view the variables that Active Admin provides, take a look at
+// `app/assets/stylesheets/active_admin/mixins/_variables.scss` in the
+// Active Admin source.
+//
+// For example, to change the sidebar width:
+// $sidebar-width: 242px;
+
+// Active Admin's got SASS!
+@import "active_admin/mixins";
+// @import "active_admin/base";
+@import "arctic_admin/base";
+
+// Overriding any non-variable Sass must be done after the fact.
+// For example, to change the default status-tag color:
+//
+//   .status_tag { background: #6090DB; }
+// For example, to change the sidebar width: 
+//
+// $sidebar-width: 242px;
+
+// Default two column layout
+@media (max-width: 1269px) {
+
+  .columns-2 {
+    flex-direction: column; 
+  }
+
+  .column {
+    flex-basis: 100%;
+  }
+
+}
+
+// Stack columns vertically on screens less than 768px wide  
+@media (max-width: 937px) {
+  .columns-2 {
+    flex-direction: row;
+  }
+}
+
+// Change f.actions to an icon instead of View Edit Delete..
+
+// Dashboard panels 
+.panel {
+  font-size: 14px;
+  padding: 10px;
+}
