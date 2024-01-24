@@ -1,0 +1,4 @@
+# This file showing any options you can use the with nixpacks.toml File that you may need with nixpacks
+
+[phases.setup]
+nixPkgs = ["...", "imagemagick"] # Or add any you need to install with nix
